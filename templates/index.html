@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Price Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --result-bg: #f0fdf4;
+            --result-border: #bbf7d0;
+            --result-text: #166534;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 650px;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        @media (max-width: 580px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 580px) {
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 0.9rem;
+            font-size: 0.95rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background-color: #f8fafc;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        button {
+            grid-column: span 2;
+            margin-top: 0.5rem;
+            padding: 0.875rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result-card {
+            margin-top: 2rem;
+            padding: 1.25rem;
+            background-color: var(--result-bg);
+            border: 1px solid var(--result-border);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .result-card span {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--result-text);
+            margin-bottom: 0.25rem;
+        }
+
+        .result-card h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--result-text);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h2>Real Estate Price Predictor</h2>
+            <p>Enter property details below to calculate the estimated value.</p>
+        </div>
+
+        <form action="/predict" method="post" class="form-grid">
+            <div class="form-group">
+                <label for="sqft">Square Footage (sqft)</label>
+                <input type="number" id="sqft" name="sqft" placeholder="e.g. 2000" required>
+            </div>
+
+            <div class="form-group">
+                <label for="beds">Bedrooms</label>
+                <input type="number" id="beds" name="beds" placeholder="e.g. 3" required>
+            </div>
+
+            <div class="form-group">
+                <label for="baths">Bathrooms</label>
+                <input type="number" id="baths" name="baths" placeholder="e.g. 2" required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age of Property (Years)</label>
+                <input type="number" id="age" name="age" placeholder="e.g. 10" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lot_size">Lot Size (sqft)</label>
+                <input type="number" id="lot_size" name="lot_size" placeholder="e.g. 5000" required>
+            </div>
+
+            <div class="form-group">
+                <label for="garage_spaces">Garage Spaces</label>
+                <input type="number" id="garage_spaces" name="garage_spaces" placeholder="e.g. 2" required>
+            </div>
+
+            <div class="form-group">
+                <label for="distance_to_transit">Distance to Transit (miles)</label>
+                <input type="number" step="0.01" id="distance_to_transit" name="distance_to_transit" placeholder="e.g. 1.5" required>
+            </div>
+
+            <div class="form-group">
+                <label for="school_rating">School Rating (1-10)</label>
+                <input type="number" id="school_rating" name="school_rating" placeholder="e.g. 8" required>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="has_pool">Has Pool? (1 for Yes, 0 for No)</label>
+                <input type="number" min="0" max="1" id="has_pool" name="has_pool" placeholder="1 or 0" required>
+            </div>
+
+            <button type="submit">Predict Price</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="result-card">
+            <span>Estimated Property Value</span>
+            <h3>{{ prediction_text }}</h3>
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
